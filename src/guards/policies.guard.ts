@@ -5,7 +5,7 @@ import { CHECK_POLICIES_KEY } from '../decorator/check-policies.decorator';
 import {
   PolicyHandler,
   PolicyHandlerCallback,
-} from './policy-handler.interface';
+} from '../model/policy-handler.interface';
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
@@ -22,6 +22,15 @@ export class PoliciesGuard implements CanActivate {
       ) || [];
 
     const { user } = context.switchToHttp().getRequest();
+
+    // const ability = this.caslAbilityFactory.defineAbility({
+    //   email: '',
+    //   firstName: '',
+    //   id: '',
+    //   lastName: '',
+    //   password: '',
+    //   role: Role.USER,
+    // });
     const ability = this.caslAbilityFactory.defineAbility(user);
 
     return handlers.every((handler) =>

@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AbilityFactory } from './ability.factory';
+import { PoliciesGuard } from '../guards/policies.guard';
 
 @Module({
-  providers: [AbilityFactory],
-  exports: [AbilityFactory],
+  providers: [PoliciesGuard, AbilityFactory],
+  exports: [PoliciesGuard, AbilityFactory],
 })
 export class AbilityModule {}

@@ -8,10 +8,22 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  role  Role   @default(USER)
-  posts Post[]
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String?
+  role     Role     @default(USER)
+  profile  Profile?
+  posts    Post[]
+}
+
+model Profile {
+  id        String  @id @default(uuid())
+  firstName String
+  lastName  String
+  mobile    String?
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model Post {

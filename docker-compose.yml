@@ -28,5 +28,10 @@ services:
     depends_on:
       - nestjs-app
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8088:8080
 volumes:
   postgres_data:

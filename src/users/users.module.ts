@@ -8,5 +8,6 @@ import { AbilityModule } from '../ability/ability.module';
   imports: [AbilityModule],
   controllers: [UsersController],
   providers: [UsersService, PrismaService],
+  exports: [UsersService, PrismaService],
 })
 export class UsersModule {}

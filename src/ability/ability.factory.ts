@@ -29,7 +29,7 @@ export class AbilityFactory {
 
     if (user.role === Role.ADMIN) {
       can(Action.Manage, 'all');
-    } else {
+    } else if (user.role === Role.USER) {
       can(Action.Read, 'all');
       can(Action.Update, User, { email: user.email });
       cannot(Action.Delete, User).because('You cannot delete articles');

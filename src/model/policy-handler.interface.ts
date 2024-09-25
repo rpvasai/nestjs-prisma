@@ -1,4 +1,4 @@
-import { AppAbility } from '../ability/ability.factory';
+import { AppAbility } from '../modules/ability/ability.factory';
 
 export interface PolicyHandler {
   handle(ability: AppAbility): boolean;

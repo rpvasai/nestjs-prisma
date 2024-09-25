@@ -1,4 +1,4 @@
-import { Role } from '../../model/user';
+import { Role } from '../../../model/user';
 
 export interface JwtPayload {
   email: string;

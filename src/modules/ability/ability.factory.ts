@@ -6,7 +6,7 @@ import {
   ExtractSubjectType,
   InferSubjects,
 } from '@casl/ability';
-import { Role, User } from '../model/user';
+import { Role, User } from '../../model/user';
 
 export enum Action {
   Manage = 'manage',

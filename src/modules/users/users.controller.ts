@@ -9,13 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { PoliciesGuard } from 'src/guards/policies.guard';
+import { PoliciesGuard } from '../../guards/policies.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CheckPolicies } from '../decorator/check-policies.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ReadUserPolicyHandler } from './ReadUserHandler';
 import { UsersService } from './users.service';
+import { CheckPolicies } from 'src/decorator/check-policies.decorator';
 
 @Controller('users')
 @ApiTags('users')

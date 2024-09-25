@@ -1,6 +1,6 @@
-import { User } from '../model/user';
+import { PolicyHandler } from '../../model/policy-handler.interface';
+import { User } from '../../model/user';
 import { Action, AppAbility } from '../ability/ability.factory';
-import { PolicyHandler } from '../model/policy-handler.interface';
 
 export class ReadUserPolicyHandler implements PolicyHandler {
   handle(ability: AppAbility) {

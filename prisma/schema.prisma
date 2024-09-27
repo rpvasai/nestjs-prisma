@@ -7,15 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  password  String?
-  role      Role       @default(USER)
-  profile   Profile?
-  bookmarks Bookmark[]
-  cart      Cart?
-  orders    Order[]
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String?
+  role     Role     @default(USER)
+  profile  Profile?
 }
 
 model Profile {
@@ -43,61 +45,52 @@ model Address {
   Profile Profile[]
 }
 
-model Product {
-  id          String      @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  stock       Int
-  bookmarks   Bookmark[]
-  orders      OrderItem[]
-  CartItem    CartItem[]
+model Screen {
+  id        String          @id @default(cuid())
+  name      String          @unique
+  features  ScreenFeature[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
-model Bookmark {
-  id        String  @id @default(uuid())
-  userId    String
-  productId String
-  User      User    @relation(fields: [userId], references: [id])
-  Product   Product @relation(fields: [productId], references: [id])
+model Feature {
+  id             String          @id @default(cuid())
+  name           String          @unique // e.g. Login, Signup, Reset
+  loginForm      LoginForm?      @relation(fields: [loginFormId], references: [id])
+  loginFormId    String?
+  screenFeatures ScreenFeature[]
 }
 
-model Cart {
-  id     String     @id @default(uuid())
-  userId String     @unique
-  items  CartItem[]
-  User   User       @relation(fields: [userId], references: [id])
+model LoginForm {
+  id                   String    @id @default(uuid())
+  loginFormName        String
+  loginFormDescription String
+  loginFormImage       String
+  email                Json
+  password             Json
+  rememberMe           Boolean
+  registerLink         String
+  resetPasswordLink    String
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  Feature              Feature[]
 }
 
-model CartItem {
-  id        String  @id @default(uuid())
-  cartId    String
-  productId String
-  quantity  Int
-  Cart      Cart    @relation(fields: [cartId], references: [id])
-  Product   Product @relation(fields: [productId], references: [id])
+model ScreenFeature {
+  id         String     @id @default(cuid())
+  screen     Screen     @relation(fields: [screenId], references: [id])
+  screenId   String
+  feature    Feature    @relation(fields: [featureId], references: [id])
+  featureId  String
+  enabled    Boolean // true for Enable, false for Disable
+  visibility Visibility // Enum for Show/Hidden
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@unique([screenId, featureId])
 }
 
-model Order {
-  id        String      @id @default(uuid())
-  userId    String
-  items     OrderItem[]
-  total     Float
-  createdAt DateTime    @default(now())
-  User      User        @relation(fields: [userId], references: [id])
-}
-
-model OrderItem {
-  id        String  @id @default(uuid())
-  orderId   String
-  productId String
-  quantity  Int
-  price     Float
-  Order     Order   @relation(fields: [orderId], references: [id])
-  Product   Product @relation(fields: [productId], references: [id])
-}
-
-enum Role {
-  USER
-  ADMIN
+enum Visibility {
+  SHOW
+  HIDDEN
 }

@@ -5,7 +5,7 @@ import {
   PolicyHandler,
   PolicyHandlerCallback,
 } from '../model/policy-handler.interface';
-import { AbilityFactory, AppAbility } from '../modules/ability/ability.factory';
+import { AbilityFactory, AppAbility } from '@/ability/ability.factory';
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {

@@ -21,29 +21,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    ports:
-      - '9001:80'
-    volumes:
-      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - nestjs-app
-
   adminer:
     image: adminer
     restart: always
     ports:
       - 8088:8080
-
-  redis:
-    image: redis:6.2.4
-    restart: always
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis_data:/data
 
 volumes:
   postgres_data:

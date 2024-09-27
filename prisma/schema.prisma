@@ -46,11 +46,11 @@ model Address {
 }
 
 model Screen {
-  id        String          @id @default(cuid())
-  name      String          @unique
-  features  ScreenFeature[]
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id             String          @id @default(cuid())
+  name           String          @unique
+  screenFeatures ScreenFeature[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Feature {
@@ -59,6 +59,20 @@ model Feature {
   loginForm      LoginForm?      @relation(fields: [loginFormId], references: [id])
   loginFormId    String?
   screenFeatures ScreenFeature[]
+}
+
+model ScreenFeature {
+  id         String     @id @default(cuid())
+  screen     Screen?    @relation(fields: [screenId], references: [id])
+  screenId   String?
+  feature    Feature?   @relation(fields: [featureId], references: [id])
+  featureId  String?
+  enabled    Boolean // true for Enable, false for Disable
+  visibility Visibility // Enum for Show/Hidden
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@unique([screenId, featureId])
 }
 
 model LoginForm {
@@ -74,20 +88,6 @@ model LoginForm {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   Feature           Feature[]
-}
-
-model ScreenFeature {
-  id         String     @id @default(cuid())
-  screen     Screen?    @relation(fields: [screenId], references: [id])
-  screenId   String?
-  feature    Feature?   @relation(fields: [featureId], references: [id])
-  featureId  String?
-  enabled    Boolean // true for Enable, false for Disable
-  visibility Visibility // Enum for Show/Hidden
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  @@unique([screenId, featureId])
 }
 
 model ACL {

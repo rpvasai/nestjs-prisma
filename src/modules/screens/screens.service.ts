@@ -11,7 +11,7 @@ export class ScreensService {
     return this.prisma.screen.create({
       data: {
         name: createScreenDto.name,
-        features: {
+        screenFeatures: {
           create: createScreenDto.features.map((feature) => ({
             enabled: feature.enabled,
             visibility: feature.visibility,
@@ -22,13 +22,36 @@ export class ScreensService {
   }
 
   findAll() {
-    return this.prisma.screen.findMany();
+    return this.prisma.screen.findMany({
+      include: {
+        screenFeatures: {
+          include: {
+            feature: {
+              include: {
+                loginForm: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   findOne(id: string) {
     return this.prisma.screen.findUnique({
       where: {
         id,
+      },
+      include: {
+        screenFeatures: {
+          include: {
+            feature: {
+              include: {
+                loginForm: true,
+              },
+            },
+          },
+        },
       },
     });
   }

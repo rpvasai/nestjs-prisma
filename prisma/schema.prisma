@@ -62,26 +62,26 @@ model Feature {
 }
 
 model LoginForm {
-  id                   String    @id @default(uuid())
-  loginFormName        String
-  loginFormDescription String
-  loginFormImage       String
-  email                Json
-  password             Json
-  rememberMe           Boolean
-  registerLink         String
-  resetPasswordLink    String
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
-  Feature              Feature[]
+  id                String    @id @default(uuid())
+  name              String
+  description       String
+  logoUrl           String
+  email             Json
+  password          Json
+  rememberMe        Boolean
+  registerLink      String
+  resetPasswordLink String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  Feature           Feature[]
 }
 
 model ScreenFeature {
   id         String     @id @default(cuid())
-  screen     Screen     @relation(fields: [screenId], references: [id])
-  screenId   String
-  feature    Feature    @relation(fields: [featureId], references: [id])
-  featureId  String
+  screen     Screen?    @relation(fields: [screenId], references: [id])
+  screenId   String?
+  feature    Feature?   @relation(fields: [featureId], references: [id])
+  featureId  String?
   enabled    Boolean // true for Enable, false for Disable
   visibility Visibility // Enum for Show/Hidden
   createdAt  DateTime   @default(now())

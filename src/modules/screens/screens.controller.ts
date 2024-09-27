@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { UpdateScreenDto } from './dto/update-screen.dto';
 import { ScreensService } from './screens.service';
+import { CreateScreenDto } from './dto/create-screen.dto';
 
 @ApiTags('Screens')
 @Controller('screens')
@@ -27,7 +27,7 @@ export class ScreensController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   @Post()
-  create(@Body() createScreenDto: Prisma.ScreenCreateInput) {
+  create(@Body() createScreenDto: CreateScreenDto) {
     return this.screensService.create(createScreenDto);
   }
 
@@ -42,7 +42,10 @@ export class ScreensController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateScreenDto: UpdateScreenDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateScreenDto: Prisma.ScreenUpdateInput,
+  ) {
     return this.screensService.update(id, updateScreenDto);
   }
 

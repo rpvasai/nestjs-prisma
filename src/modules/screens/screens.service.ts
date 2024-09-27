@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { UpdateScreenDto } from './dto/update-screen.dto';
+import { CreateScreenDto } from './dto/create-screen.dto';
 
 @Injectable()
 export class ScreensService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createScreenDto: Prisma.ScreenCreateInput) {
+
+  create(createScreenDto: CreateScreenDto) {
     return this.prisma.screen.create({
       data: {
-        ...createScreenDto,
+        name: createScreenDto.name,
+        features: {
+          create: createScreenDto.features.map((feature) => ({
+            enabled: feature.enabled,
+            visibility: feature.visibility,
+          })),
+        },
       },
     });
   }
@@ -26,7 +33,7 @@ export class ScreensService {
     });
   }
 
-  update(id: string, updateScreenDto: UpdateScreenDto) {
+  update(id: string, updateScreenDto: Prisma.ScreenUpdateInput) {
     return this.prisma.screen.update({
       where: {
         id,

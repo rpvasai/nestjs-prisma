@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AclService } from './acl.service';
-import { AclController } from './acl.controller';
+import { ACLController } from './acl.controller';
+import { ACLService } from './acl.service';
 
 @Module({
-  controllers: [AclController],
-  providers: [AclService],
+  controllers: [ACLController],
+  providers: [ACLService],
 })
 export class AclModule {}

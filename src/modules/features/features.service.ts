@@ -1,14 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateFeatureDto } from './dto/create-feature.dto';
+
 @Injectable()
 export class FeaturesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createFeatureDto: Prisma.FeatureCreateInput) {
+  create(createFeatureDto: CreateFeatureDto) {
     return this.prisma.feature.create({
       data: {
-        ...createFeatureDto,
+        name: createFeatureDto.name,
+        loginForm: {
+          create: {
+            name: createFeatureDto.loginForm.name,
+            description: createFeatureDto.loginForm.description,
+            logoUrl: createFeatureDto.loginForm.logoUrl,
+            email: createFeatureDto.loginForm.email,
+            password: createFeatureDto.loginForm.password,
+            rememberMe: createFeatureDto.loginForm.rememberMe,
+            registerLink: createFeatureDto.loginForm.registerLink,
+            resetPasswordLink: createFeatureDto.loginForm.resetPasswordLink,
+          },
+        },
       },
     });
   }

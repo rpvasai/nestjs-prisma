@@ -90,6 +90,20 @@ model ScreenFeature {
   @@unique([screenId, featureId])
 }
 
+model ACL {
+  id         String  @id @default(cuid())
+  userId     String
+  resource   String // e.g., "Post", "Feature"
+  action     String // e.g., "read", "write", "delete"
+  resourceId String // The ID of the resource being accessed
+  allow      Boolean // True if access is allowed
+
+  createdBy String
+  updatedBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Visibility {
   SHOW
   HIDDEN

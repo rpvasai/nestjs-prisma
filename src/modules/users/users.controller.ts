@@ -9,13 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { PoliciesGuard } from '../../guards/policies.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ReadUserPolicyHandler } from './ReadUserHandler';
 import { UsersService } from './users.service';
-import { CheckPolicies } from 'src/decorator/check-policies.decorator';
 
 @Controller('users')
 @ApiTags('users')
@@ -29,8 +26,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard, PoliciesGuard)
-  @CheckPolicies(new ReadUserPolicyHandler())
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.usersService.findAll();

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateFeatureDto, SignInFormDto } from './dto/create-feature.dto';
+import { CreateFeatureDto } from './dto/create-feature.dto';
 
 @Injectable()
 export class FeaturesService {
@@ -12,7 +12,9 @@ export class FeaturesService {
       data: {
         name: createFeatureDto.name,
         signInForm: {
-          create: SignInFormDto as any,
+          create: {
+            ...createFeatureDto.signInForm,
+          },
         },
       },
     });

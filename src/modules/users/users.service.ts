@@ -1,13 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { hashSync } from 'bcryptjs';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
   async create(createUserDto: CreateUserDto) {
-    return await this.prismaService.user.create({ data: createUserDto });
+    const user = await this.findOneByEmail(createUserDto.email);
+    if (user) {
+      throw new ForbiddenException('User already exists');
+    }
+    const hashedPassword = hashSync(createUserDto.password, 10);
+    return await this.prismaService.user.create({
+      data: {
+        email: createUserDto.email.toLowerCase(),
+        password: hashedPassword,
+      },
+    });
   }
 
   findAll() {
@@ -18,8 +29,15 @@ export class UsersService {
     return this.prismaService.user.findUnique({ where: { id } });
   }
 
-  findOnebyEmail(email: string) {
-    return this.prismaService.user.findUnique({ where: { email } });
+  async findOneByEmail(email: string) {
+    return await this.prismaService.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { ScreensService } from './screens.service';
 import { CreateScreenDto } from './dto/create-screen.dto';
+import { PermissionGuard } from '@/guards/permission/permission.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Screens')
 @Controller('screens')
@@ -31,6 +34,7 @@ export class ScreensController {
     return this.screensService.create(createScreenDto);
   }
 
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   @Get()
   findAll() {
     return this.screensService.findAll();

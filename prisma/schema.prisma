@@ -52,9 +52,14 @@ model Screen {
 model Feature {
   id             String          @id @default(cuid())
   name           String          @unique // e.g. Login, Signup, Reset
-  loginForm      LoginForm?      @relation(fields: [loginFormId], references: [id])
-  loginFormId    String?
+  signInForm     SignInForm      @relation(fields: [signInFormId], references: [id])
+  signInFormId   String
+  SignupForm     SignupForm?     @relation(fields: [signupFormId], references: [id])
+  signupFormId   String?
   screenFeatures ScreenFeature[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ScreenFeature {
@@ -71,19 +76,50 @@ model ScreenFeature {
   @@unique([screenId, featureId])
 }
 
-model LoginForm {
-  id                String    @id @default(uuid())
-  name              String
-  description       String
-  logoUrl           String
-  email             Json
-  password          Json
-  rememberMe        Boolean
-  registerLink      String
-  resetPasswordLink String
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  Feature           Feature[]
+model SignInForm {
+  id                 String    @id @default(uuid())
+  name               String
+  description        String
+  logoUrl            String
+  email              Json // Contains field properties like placeholder, validation rules
+  password           Json // Contains field properties like placeholder, validation rules
+  rememberMe         Boolean
+  registerLink       String?
+  resetPasswordLink  String?
+  socialLogins       Json? // Array of enabled social login options
+  twoFactorAuth      Boolean   @default(false)
+  customCss          String? // Custom CSS for styling the login form
+  redirectUrl        String? // URL to redirect after successful login
+  maxAttempts        Int? // Max login attempts before lockout
+  lockoutDuration    Int? // Lockout duration in minutes
+  termsAndConditions String? // Link to terms and conditions
+  privacyPolicy      String? // Link to privacy policy
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  Feature            Feature[]
+}
+
+model SignupForm {
+  id                 String    @id @default(uuid())
+  name               String
+  description        String
+  logoUrl            String
+  email              Json // Contains field properties like placeholder, validation rules
+  password           Json // Contains field properties like placeholder, validation rules
+  confirmPassword    Json // Contains field properties like placeholder, validation rules
+  firstName          Json? // Optional field for first name
+  lastName           Json? // Optional field for last name
+  phoneNumber        Json? // Optional field for phone number
+  loginLink          String? // Link to login page
+  socialSignups      Json? // Array of enabled social signup options
+  customCss          String? // Custom CSS for styling the signup form
+  redirectUrl        String? // URL to redirect after successful signup
+  termsAndConditions String? // Link to terms and conditions
+  privacyPolicy      String? // Link to privacy policy
+  emailVerification  Boolean   @default(false)
+  features           Feature[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }
 
 enum Visibility {

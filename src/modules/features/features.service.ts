@@ -11,7 +11,7 @@ export class FeaturesService {
     return this.prisma.feature.create({
       data: {
         name: createFeatureDto.name,
-        loginForm: {
+        signInForm: {
           create: {
             name: createFeatureDto.loginForm.name,
             description: createFeatureDto.loginForm.description,

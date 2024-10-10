@@ -1,20 +1,10 @@
 services:
-  nestjs-app:
-    build: .
-    container_name: nestjs-app
-    restart: always
-    ports:
-      - '9201:3000'
-    environment: # Added environment variables for better configuration
-      NODE_ENV: production
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/nest_db
-
   postgres:
     image: postgres:13
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: KS762wu_kkT6EzWl
       POSTGRES_DB: nest_db
     ports:
       - '5432:5432'

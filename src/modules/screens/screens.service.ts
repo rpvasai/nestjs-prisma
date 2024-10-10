@@ -28,7 +28,8 @@ export class ScreensService {
           include: {
             feature: {
               include: {
-                loginForm: true,
+                signInForm: true,
+                SignupForm: true,
               },
             },
           },
@@ -47,7 +48,8 @@ export class ScreensService {
           include: {
             feature: {
               include: {
-                loginForm: true,
+                signInForm: true,
+                SignupForm: true,
               },
             },
           },
